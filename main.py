@@ -37,19 +37,21 @@ def require_login():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if request.method == 'POST':
+    if request.method =='POST':
         username = request.form['username']
         password = request.form['password']
 
         user = User.query.filter_by(username=username).first()
-        
+
+
         if user and user.password == password:
             session['username'] = username
             return redirect('/newpost')
-        else:    
-            flash('User password incorrect, or user does not exist', 'error')
-
+        else:
+            flash('Password is incorrect or user does not exist', 'error')
+    
     return render_template('login.html')
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -57,24 +59,22 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
+
         existing_user = User.query.filter_by(username=username).first()
 
-        if len(username) < 3 or len(password) < 3:
-            flash('Enter valid  username or password')
-
-        if verify != password:
-            flash('Password does not match')
-        
-        if existing_user:
-            flash('Duplicate User')
-
+        if password != verify:
+            flash('Password does not match', "error")
+        elif len(username) < 3 or len(password) < 3:
+            flash('Username and password must be more than 3 characters', 'error')
+        elif existing_user:
+            flash('User already exists', 'error')
         else:
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
             return redirect('/newpost')
-        
+
     return render_template('signup.html')
 
 @app.route('/logout')
