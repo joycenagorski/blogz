@@ -67,7 +67,7 @@ def signup():
         
         if existing_user:
             flash('Duplicate User')
-            
+
         else:
             new_user = User(username, password)
             db.session.add(new_user)
@@ -75,7 +75,7 @@ def signup():
             session['username'] = username
             return redirect('/newpost')
         
-    return render_template('signup.html', header='Signup')
+    return render_template('signup.html')
 
 @app.route('/logout')
 def logout():
