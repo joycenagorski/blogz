@@ -65,9 +65,9 @@ def signup():
         if password != verify:
             flash('Password does not match', "error")
         elif len(username) < 3 or len(password) < 3:
-            flash('Username and password must be more than 3 characters', 'error')
+            flash('Username and password invalid', "error")
         elif existing_user:
-            flash('User already exists', 'error')
+            flash('Duplicate User', "error")
         else:
             new_user = User(username, password)
             db.session.add(new_user)
