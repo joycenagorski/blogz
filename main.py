@@ -60,7 +60,7 @@ def signup():
         existing_user = User.query.filter_by(username=username).first()
 
         if len(username) < 3 or len(password) < 3:
-            flash('Enter valid password')
+            flash('Enter valid  username or password')
 
         if verify != password:
             flash('Password does not match')
